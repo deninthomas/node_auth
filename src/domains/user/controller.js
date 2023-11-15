@@ -12,6 +12,12 @@ try{
   if(!fetchedUser){
     throw  Error('Invalid email');
      }
+     if(!fetchedUser.verified){
+      throw Error('Account not verified');
+
+     }
+
+
      // compare the user entered password with the stored one in database
 
      const hashedPassword = fetchedUser.password;
