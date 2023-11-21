@@ -3,7 +3,7 @@ const router = express.Router();
 const {sendOTP,verifyOTP,deleteOTP} = require("./controller");
 
 
-router.post("/verify", async(req,res) => {
+router.post("/otpverification", async(req,res) => {
 
     try{
 

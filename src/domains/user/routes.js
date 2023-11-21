@@ -7,11 +7,11 @@ const {sendVerificationOTPEmail} =require("./../email_verification/controller");
 
 
 //protected route
-router.get("/private_data",auth,(req,res) =>{
-  res.status(200).send(`You are in the private user account of ${req.currentUser.email}`);
-})
+// router.get("/private_data",auth,(req,res) =>{
+//   res.status(200).send(`You are in the private user account of ${req.currentUser.email}`);
+// })
 
-//signin
+//login
 router.post("/", async (req,res) => {
 
 
@@ -44,13 +44,14 @@ router.post("/signup", async (req, res) => {
   try {
     let { name, email, password } = req.
       body;
-    name = name.trim();
-    eamil = email.trim();
+    name = name;
+    email = email.trim();
     password = password.trim();
 
     if (!(name && email && password)) {
       throw Error("Empty Input Filed");
-    } else if (!/^[a-zA-Z]*$/.test(name)) {
+    // } else if (/^[a-zA-Z\s]+$/.test(name)) 
+     } else if (!/^[A-Za-z]/.test(name)){
       throw Error("Invalid Name Entered");
     } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
       throw Error("Please enter a valid Email Address");
@@ -65,6 +66,7 @@ router.post("/signup", async (req, res) => {
       });
       await sendVerificationOTPEmail(email);
       res.status(200).json(newUser);
+      // res.redirect("/signup/otpverification");
     }
   } catch (error) {
     res.status(400).send(error. message);

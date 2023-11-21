@@ -48,13 +48,17 @@ try{
 const createNewUser = async (data) => {
   try {
     const { name, email, password } = data;
+
     // Checking If user Already Exist
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      throw Error("User with the provided Email already exists");
+      if (existingUser.verified) {
+        throw new Error("User with the provided Email already exists and is verified");
+      } else {
+        await User.findOneAndDelete({ email });
+      }
     }
-
     // hash password
     const hashedPassword = await hashData(password);
     // Create new user

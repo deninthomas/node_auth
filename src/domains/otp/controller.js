@@ -52,18 +52,20 @@ const sendOTP = async ({ email, subject, message, duration = 1 }) => {
       from: AUTH_EMAIL,
       to: email,
       subject,
-      html: `<p>${message}</p><p style ="color :red; font-size : 25px; letter-spacing:2px;"><b>${generatedOTP}</b></p>
-            <p> This code <b> expires in ${duration} hours(s)</b>.</p>`,
+      html: `<p>Hello <b>${ email }</b></p>
+      <p>${message}</p><p style ="color :red; font-size : 25px; letter-spacing:2px;"><b>${generatedOTP}</b></p>
+            <p> This code <b> expires in 1 minutes</b>.</p>`,
     };
     await sendEmail(mailOptions);
 
     // save otp record
+    const oneMinute = 60 * 1000;
     const hashedOTP = await hashData(generatedOTP);
     const newOTP = await new OTP({
       email,
       otp: hashedOTP,
       createdAt: Date.now(),
-      expireIn: Date.now() + 3600000 * +duration,
+      expireIn:Date.now() + oneMinute,
     });
 
     const createdOTPRecord = await newOTP.save();
